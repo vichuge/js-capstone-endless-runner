@@ -1,5 +1,4 @@
 import 'phaser';
-import gameOptions from '../Objects/gameOptions';
 
 export default class PreGameScene extends Phaser.Scene {
     constructor() {
@@ -19,6 +18,12 @@ export default class PreGameScene extends Phaser.Scene {
         this.load.spritesheet("coin", "assets/endless/coin.png", {
             frameWidth: 20,
             frameHeight: 20
+        });
+
+        // mountains are a sprite sheet made by 512x512 pixels
+        this.load.spritesheet("mountain", "assets/endless/mountain.png", {
+            frameWidth: 512,
+            frameHeight: 512
         });
     }
 

@@ -2,6 +2,9 @@ let gameOptions = {
     // platform speed range, in pixels per second
     platformSpeedRange: [300, 300],
 
+    // mountain speed, in pixels per second
+    mountainSpeed: 80,
+
     // spawn range, how far should be the rightmost platform from the right edge
     // before next platform spawns, in pixels
     spawnRange: [80, 300],

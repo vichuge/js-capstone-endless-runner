@@ -12,8 +12,8 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
 
-        // keeping track of added platforms
-        this.addedPlatforms = 0;
+        // group with all active mountains.
+        this.mountainGroup = this.add.group();
 
         // group with all active platforms.
         this.platformGroup = this.add.group({
@@ -51,6 +51,12 @@ export default class GameScene extends Phaser.Scene {
             }
         });
 
+        // adding a mountain
+        this.addMountains()
+
+        // keeping track of added platforms
+        this.addedPlatforms = 0;
+
         // number of consecutive jumps made by the player so far
         this.playerJumps = 0;
 
@@ -60,6 +66,7 @@ export default class GameScene extends Phaser.Scene {
         // adding the player;
         this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.7, "player");
         this.player.setGravityY(gameOptions.playerGravity);
+        this.player.setDepth(2);
 
         // setting collisions between the player and the platform group
         this.physics.add.collider(this.player, this.platformGroup, function () {
@@ -90,6 +97,31 @@ export default class GameScene extends Phaser.Scene {
         this.input.on("pointerdown", this.jump, this);
     }
 
+    // adding mountains
+    addMountains() {
+        let rightmostMountain = this.getRightmostMountain();
+        if (rightmostMountain < game.config.width * 2) {
+            let mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), game.config.height + Phaser.Math.Between(0, 100), "mountain");
+            mountain.setOrigin(0.5, 1);
+            mountain.body.setVelocityX(gameOptions.mountainSpeed * -1)
+            this.mountainGroup.add(mountain);
+            if (Phaser.Math.Between(0, 1)) {
+                mountain.setDepth(1);
+            }
+            mountain.setFrame(Phaser.Math.Between(0, 3))
+            this.addMountains()
+        }
+    }
+
+    // getting rightmost mountain x position
+    getRightmostMountain() {
+        let rightmostMountain = -200;
+        this.mountainGroup.getChildren().forEach(function (mountain) {
+            rightmostMountain = Math.max(rightmostMountain, mountain.x);
+        })
+        return rightmostMountain;
+    }
+
     // the core of the script: platform are added from the pool or created on the fly
     addPlatform(platformWidth, posX, posY) {
         this.addedPlatforms++;
@@ -110,6 +142,7 @@ export default class GameScene extends Phaser.Scene {
             this.physics.add.existing(platform);
             platform.body.setImmovable(true);
             platform.body.setVelocityX(Phaser.Math.Between(gameOptions.platformSpeedRange[0], gameOptions.platformSpeedRange[1]) * -1);
+            platform.setDepth(2);
             this.platformGroup.add(platform);
         }
         this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
@@ -131,6 +164,7 @@ export default class GameScene extends Phaser.Scene {
                     coin.setImmovable(true);
                     coin.setVelocityX(platform.body.velocity.x);
                     coin.anims.play("rotate");
+                    coin.setDepth(2);
                     this.coinGroup.add(coin);
                 }
             }
@@ -150,6 +184,7 @@ export default class GameScene extends Phaser.Scene {
             this.player.anims.stop();
         }
     }
+
     update() {
 
         // game over
@@ -178,6 +213,19 @@ export default class GameScene extends Phaser.Scene {
             if (coin.x < - coin.displayWidth / 2) {
                 this.coinGroup.killAndHide(coin);
                 this.coinGroup.remove(coin);
+            }
+        }, this);
+
+        // recycling mountains
+        this.mountainGroup.getChildren().forEach(function (mountain) {
+            if (mountain.x < - mountain.displayWidth) {
+                let rightmostMountain = this.getRightmostMountain();
+                mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);
+                mountain.y = game.config.height + Phaser.Math.Between(0, 100);
+                mountain.setFrame(Phaser.Math.Between(0, 3))
+                if (Phaser.Math.Between(0, 1)) {
+                    mountain.setDepth(1);
+                }
             }
         }, this);
 
