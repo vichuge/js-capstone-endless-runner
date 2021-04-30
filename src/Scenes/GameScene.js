@@ -7,6 +7,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
+        // add logo image
+        this.add.image(400, 300, 'bgPreloader');
         this.load.image("platform", "assets/endless/platform.png");
 
         // player is a sprite sheet made by 24x48 pixels
