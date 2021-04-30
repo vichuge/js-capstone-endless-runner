@@ -1,7 +1,6 @@
 let gameOptions = {
-
     // platform speed range, in pixels per second
-    platformSpeedRange: [300, 400],
+    platformSpeedRange: [300, 300],
 
     // spawn range, how far should be the rightmost platform from the right edge
     // before next platform spawns, in pixels
@@ -11,10 +10,10 @@ let gameOptions = {
     platformSizeRange: [90, 300],
 
     // a height range between rightmost platform and next platform to be spawned
-    platformHeightRange: [-10, 10],
+    platformHeightRange: [-5, 5],
 
     // a scale to be multiplied by platformHeightRange
-    platformHeighScale: 10,
+    platformHeighScale: 20,
 
     // platform max and min height, as screen height ratio
     platformVerticalLimit: [0.4, 0.8],
@@ -29,7 +28,10 @@ let gameOptions = {
     playerStartPosition: 200,
 
     // consecutive jumps allowed
-    jumps: 2
+    jumps: 2,
+
+    // % of probability a coin appears on the platform
+    coinPercent: 25
 }
 
 export default gameOptions;
