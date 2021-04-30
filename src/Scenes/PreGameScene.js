@@ -20,6 +20,12 @@ export default class PreGameScene extends Phaser.Scene {
             frameHeight: 20
         });
 
+        // the firecamp is a sprite sheet made by 32x58 pixels
+        this.load.spritesheet("fire", "assets/endless/fire.png", {
+            frameWidth: 40,
+            frameHeight: 70
+        });
+
         // mountains are a sprite sheet made by 512x512 pixels
         this.load.spritesheet("mountain", "assets/endless/mountain.png", {
             frameWidth: 512,
@@ -49,6 +55,17 @@ export default class PreGameScene extends Phaser.Scene {
             }),
             frameRate: 15,
             yoyo: true,
+            repeat: -1
+        });
+
+        // setting fire animation
+        this.anims.create({
+            key: "burn",
+            frames: this.anims.generateFrameNumbers("fire", {
+                start: 0,
+                end: 4
+            }),
+            frameRate: 15,
             repeat: -1
         });
 

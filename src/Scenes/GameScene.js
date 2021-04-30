@@ -51,6 +51,24 @@ export default class GameScene extends Phaser.Scene {
             }
         });
 
+        // group with all active firecamps.
+        this.fireGroup = this.add.group({
+
+            // once a firecamp is removed, it's added to the pool
+            removeCallback: function (fire) {
+                fire.scene.firePool.add(fire)
+            }
+        });
+
+        // fire pool
+        this.firePool = this.add.group({
+
+            // once a fire is removed from the pool, it's added to the active fire group
+            removeCallback: function (fire) {
+                fire.scene.fireGroup.add(fire)
+            }
+        });
+
         // adding a mountain
         this.addMountains()
 
@@ -68,8 +86,11 @@ export default class GameScene extends Phaser.Scene {
         this.player.setGravityY(gameOptions.playerGravity);
         this.player.setDepth(2);
 
+        // the player is not dying
+        this.dying = false;
+
         // setting collisions between the player and the platform group
-        this.physics.add.collider(this.player, this.platformGroup, function () {
+        this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function () {
 
             // play "run" animation if the player is on a platform
             if (!this.player.anims.isPlaying) {
@@ -79,6 +100,7 @@ export default class GameScene extends Phaser.Scene {
 
         // setting collisions between the player and the coin group
         this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
+
             this.tweens.add({
                 targets: coin,
                 y: coin.y - 100,
@@ -91,6 +113,18 @@ export default class GameScene extends Phaser.Scene {
                     this.coinGroup.remove(coin);
                 }
             });
+
+        }, null, this);
+
+        // setting collisions between the player and the fire group
+        this.physics.add.overlap(this.player, this.fireGroup, function (player, fire) {
+
+            this.dying = true;
+            this.player.anims.stop();
+            this.player.setFrame(2);
+            this.player.body.setVelocityY(-200);
+            this.physics.world.removeCollider(this.platformCollider);
+
         }, null, this);
 
         // checking for input
@@ -147,8 +181,10 @@ export default class GameScene extends Phaser.Scene {
         }
         this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
 
-        // is there a coin over the platform?
+        // if this is not the starting platform...
         if (this.addedPlatforms > 1) {
+
+            // is there a coin over the platform?
             if (Phaser.Math.Between(1, 100) <= gameOptions.coinPercent) {
                 if (this.coinPool.getLength()) {
                     let coin = this.coinPool.getFirst();
@@ -168,12 +204,35 @@ export default class GameScene extends Phaser.Scene {
                     this.coinGroup.add(coin);
                 }
             }
+
+            // is there a fire over the platform?
+            if (Phaser.Math.Between(1, 100) <= gameOptions.firePercent) {
+                if (this.firePool.getLength()) {
+                    let fire = this.firePool.getFirst();
+                    fire.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+                    fire.y = posY - 46;
+                    fire.alpha = 1;
+                    fire.active = true;
+                    fire.visible = true;
+                    this.firePool.remove(fire);
+                }
+                else {
+                    let fire = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), posY - 46, "fire");
+                    fire.setImmovable(true);
+                    fire.setVelocityX(platform.body.velocity.x);
+                    fire.setSize(8, 2, true)
+                    fire.anims.play("burn");
+                    fire.setDepth(2);
+                    this.fireGroup.add(fire);
+                }
+            }
         }
     }
 
     // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
+    // and obviously if the player is not dying
     jump() {
-        if (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps)) {
+        if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) {
             if (this.player.body.touching.down) {
                 this.playerJumps = 0;
             }
@@ -191,6 +250,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.player.y > game.config.height) {
             this.scene.start("PlayGame");
         }
+
         this.player.x = gameOptions.playerStartPosition;
 
         // recycling platforms
@@ -213,6 +273,14 @@ export default class GameScene extends Phaser.Scene {
             if (coin.x < - coin.displayWidth / 2) {
                 this.coinGroup.killAndHide(coin);
                 this.coinGroup.remove(coin);
+            }
+        }, this);
+
+        // recycling fire
+        this.fireGroup.getChildren().forEach(function (fire) {
+            if (fire.x < - fire.displayWidth / 2) {
+                this.fireGroup.killAndHide(fire);
+                this.fireGroup.remove(fire);
             }
         }, this);
 

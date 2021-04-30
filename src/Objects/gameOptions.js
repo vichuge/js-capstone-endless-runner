@@ -34,7 +34,10 @@ let gameOptions = {
     jumps: 2,
 
     // % of probability a coin appears on the platform
-    coinPercent: 25
+    coinPercent: 25,
+
+    // % of probability a fire appears on the platform
+    firePercent: 25
 }
 
 export default gameOptions;
