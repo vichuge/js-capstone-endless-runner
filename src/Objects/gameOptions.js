@@ -7,7 +7,7 @@ let gameOptions = {
 
     // spawn range, how far should be the rightmost platform from the right edge
     // before next platform spawns, in pixels
-    spawnRange: [80, 300],
+    spawnRange: [80, 200],
 
     // platform width range, in pixels
     platformSizeRange: [90, 300],
@@ -34,10 +34,10 @@ let gameOptions = {
     jumps: 2,
 
     // % of probability a coin appears on the platform
-    coinPercent: 25,
+    coinPercent: 50,
 
     // % of probability a fire appears on the platform
-    firePercent: 25
+    firePercent: 15
 }
 
 export default gameOptions;
