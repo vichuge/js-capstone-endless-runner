@@ -46,6 +46,13 @@ export default class PreGameScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: "poison",
+            frames: [{ key: "player", frame: 7}],
+            frameRate: 8,
+            repeat: -1
+        });
+
         // setting coin animation
         this.anims.create({
             key: "rotate",

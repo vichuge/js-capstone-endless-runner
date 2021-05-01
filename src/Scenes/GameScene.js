@@ -99,7 +99,11 @@ export default class GameScene extends Phaser.Scene {
         }, null, this);
 
         // setting collisions between the player and the coin group
+        let score = 0;
         this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
+            coin.disableBody(true, false);
+            score += 10;
+            this.scoreText.setText(`Score: ${score}`);
 
             this.tweens.add({
                 targets: coin,
@@ -113,14 +117,14 @@ export default class GameScene extends Phaser.Scene {
                     this.coinGroup.remove(coin);
                 }
             });
-
         }, null, this);
 
         // setting collisions between the player and the fire group
         this.physics.add.overlap(this.player, this.fireGroup, function (player, fire) {
 
             this.dying = true;
-            this.player.anims.stop();
+            //this.player.anims.stop();
+            this.player.anims.play("poison");
             this.player.setFrame(2);
             this.player.body.setVelocityY(-200);
             this.physics.world.removeCollider(this.platformCollider);
@@ -129,6 +133,9 @@ export default class GameScene extends Phaser.Scene {
 
         // checking for input
         this.input.on("pointerdown", this.jump, this);
+
+        // score
+        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
     }
 
     // adding mountains
@@ -241,6 +248,7 @@ export default class GameScene extends Phaser.Scene {
 
             // stops animation
             this.player.anims.stop();
+            //this.player.anims.play("jump");
         }
     }
 
@@ -248,7 +256,7 @@ export default class GameScene extends Phaser.Scene {
 
         // game over
         if (this.player.y > game.config.height) {
-            this.scene.start("PlayGame");
+            this.scene.start("Title");
         }
 
         this.player.x = gameOptions.playerStartPosition;
