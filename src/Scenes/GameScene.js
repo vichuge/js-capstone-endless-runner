@@ -22,7 +22,7 @@ export default class GameScene extends Phaser.Scene {
         this.platformGroup = this.add.group({
 
             // once a platform is removed, it's added to the pool
-            removeCallback: function (platform) {
+            removeCallback: (platform) => {
                 platform.scene.platformPool.add(platform)
             }
         });
@@ -31,7 +31,7 @@ export default class GameScene extends Phaser.Scene {
         this.platformPool = this.add.group({
 
             // once a platform is removed from the pool, it's added to the active platforms group
-            removeCallback: function (platform) {
+            removeCallback: (platform) => {
                 platform.scene.platformGroup.add(platform)
             }
         });
@@ -40,7 +40,7 @@ export default class GameScene extends Phaser.Scene {
         this.coinGroup = this.add.group({
 
             // once a coin is removed, it's added to the pool
-            removeCallback: function (coin) {
+            removeCallback: (coin) => {
                 coin.scene.coinPool.add(coin)
             }
         });
@@ -49,7 +49,7 @@ export default class GameScene extends Phaser.Scene {
         this.coinPool = this.add.group({
 
             // once a coin is removed from the pool, it's added to the active coins group
-            removeCallback: function (coin) {
+            removeCallback: (coin) => {
                 coin.scene.coinGroup.add(coin)
             }
         });
@@ -58,7 +58,7 @@ export default class GameScene extends Phaser.Scene {
         this.fireGroup = this.add.group({
 
             // once a firecamp is removed, it's added to the pool
-            removeCallback: function (fire) {
+            removeCallback: (fire) => {
                 fire.scene.firePool.add(fire)
             }
         });
@@ -67,7 +67,7 @@ export default class GameScene extends Phaser.Scene {
         this.firePool = this.add.group({
 
             // once a fire is removed from the pool, it's added to the active fire group
-            removeCallback: function (fire) {
+            removeCallback: (fire) => {
                 fire.scene.fireGroup.add(fire)
             }
         });
@@ -93,7 +93,7 @@ export default class GameScene extends Phaser.Scene {
         this.dying = false;
 
         // setting collisions between the player and the platform group
-        this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function () {
+        this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, () => {
 
             // play "run" animation if the player is on a platform
             if (!this.player.anims.isPlaying) {
@@ -103,7 +103,7 @@ export default class GameScene extends Phaser.Scene {
 
         // setting collisions between the player and the coin group
         //let score = 0;
-        this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
+        this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
             coin.disableBody(true, false);
             this.score += 10;
             if (this.model.soundOn === true) {
@@ -119,7 +119,7 @@ export default class GameScene extends Phaser.Scene {
                 duration: 800,
                 ease: "Cubic.easeOut",
                 callbackScope: this,
-                onComplete: function () {
+                onComplete: () => {
                     this.coinGroup.killAndHide(coin);
                     this.coinGroup.remove(coin);
                 }
@@ -127,10 +127,9 @@ export default class GameScene extends Phaser.Scene {
         }, null, this);
 
         // setting collisions between the player and the fire group
-        this.physics.add.overlap(this.player, this.fireGroup, function (player, fire) {
+        this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
 
             this.dying = true;
-            //this.player.anims.stop();
             this.player.anims.play("poison");
             this.player.setFrame(2);
             this.player.body.setVelocityY(-200);
@@ -165,7 +164,7 @@ export default class GameScene extends Phaser.Scene {
     // getting rightmost mountain x position
     getRightmostMountain() {
         let rightmostMountain = -200;
-        this.mountainGroup.getChildren().forEach(function (mountain) {
+        this.mountainGroup.getChildren().forEach((mountain) => {
             rightmostMountain = Math.max(rightmostMountain, mountain.x);
         })
         return rightmostMountain;
@@ -276,7 +275,7 @@ export default class GameScene extends Phaser.Scene {
         // recycling platforms
         let minDistance = game.config.width;
         let rightmostPlatformHeight = 0;
-        this.platformGroup.getChildren().forEach(function (platform) {
+        this.platformGroup.getChildren().forEach((platform) => {
             let platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
             if (platformDistance < minDistance) {
                 minDistance = platformDistance;
@@ -289,7 +288,7 @@ export default class GameScene extends Phaser.Scene {
         }, this);
 
         // recycling coins
-        this.coinGroup.getChildren().forEach(function (coin) {
+        this.coinGroup.getChildren().forEach((coin) => {
             if (coin.x < - coin.displayWidth / 2) {
                 this.coinGroup.killAndHide(coin);
                 this.coinGroup.remove(coin);
@@ -297,7 +296,7 @@ export default class GameScene extends Phaser.Scene {
         }, this);
 
         // recycling fire
-        this.fireGroup.getChildren().forEach(function (fire) {
+        this.fireGroup.getChildren().forEach((fire) => {
             if (fire.x < - fire.displayWidth / 2) {
                 this.fireGroup.killAndHide(fire);
                 this.fireGroup.remove(fire);
@@ -305,7 +304,7 @@ export default class GameScene extends Phaser.Scene {
         }, this);
 
         // recycling mountains
-        this.mountainGroup.getChildren().forEach(function (mountain) {
+        this.mountainGroup.getChildren().forEach((mountain) => {
             if (mountain.x < - mountain.displayWidth) {
                 let rightmostMountain = this.getRightmostMountain();
                 mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);

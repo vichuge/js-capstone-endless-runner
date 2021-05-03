@@ -15,7 +15,7 @@ export default class Button2 extends Phaser.GameObjects.Container {
         this.add(this.button);
         this.add(this.text);
 
-        this.button.on('pointerdown', function () {
+        this.button.on('pointerdown', () => {
             let txt = prompt("Please enter your name", gameOptions.playerName);
             if (txt === '' || txt === null) {
                 this.scene.scene.start('Options');
@@ -23,15 +23,15 @@ export default class Button2 extends Phaser.GameObjects.Container {
                 gameOptions.playerName = txt;
                 this.scene.scene.start('Title');
             }
-        }.bind(this));
+        });
 
-        this.button.on('pointerover', function () {
+        this.button.on('pointerover', () => {
             this.button.setTexture(key2);
-        }.bind(this));
+        });
 
-        this.button.on('pointerout', function () {
+        this.button.on('pointerout', () => {
             this.button.setTexture(key1);
-        }.bind(this));
+        });
 
         this.scene.add.existing(this);
     }

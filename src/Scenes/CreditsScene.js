@@ -35,7 +35,7 @@ export default class CreditsScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 3000,
       delay: 1000,
-      onComplete: function () {
+      onComplete: () => {
         this.destroy;
       }
     });
@@ -46,10 +46,10 @@ export default class CreditsScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 8000,
       delay: 700,
-      onComplete: function () {
+      onComplete: () => {
         this.madeByTween.destroy;
         this.scene.start('Title');
-      }.bind(this)
+      }
     });
 
     //this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'Title');
