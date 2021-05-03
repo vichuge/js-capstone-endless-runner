@@ -43,7 +43,12 @@ let gameOptions = {
     playerName: '',
 
     // Score list
-    scoreList: ''
+    scoreList: '',
+
+    // Places for hall of fame
+    firstPlace: '',
+    secondPlace: '',
+    thirdPlace: ''
 }
 
 export default gameOptions;

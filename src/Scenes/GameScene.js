@@ -6,8 +6,10 @@ export default class GameScene extends Phaser.Scene {
         super('Game');
     }
 
+
     preload() {
         this.add.image(400, 300, 'bgPreloader');
+        this.score = 0;
     }
 
     create() {
@@ -99,12 +101,12 @@ export default class GameScene extends Phaser.Scene {
         }, null, this);
 
         // setting collisions between the player and the coin group
-        let score = 0;
+        //let score = 0;
         this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
             coin.disableBody(true, false);
-            score += 10;
+            this.score += 10;
             this.bgMusic = this.sound.add('coin', { volume: 0.5, loop: false }).play();
-            this.scoreText.setText(`${gameOptions.playerName}'s Score: ${score}`);
+            this.scoreText.setText(`${gameOptions.playerName}'s Score: ${this.score}`);
 
             this.tweens.add({
                 targets: coin,
@@ -259,6 +261,7 @@ export default class GameScene extends Phaser.Scene {
         // game over
         if (this.player.y > game.config.height) {
             this.scene.start("Title");
+            this.insertScore();
         }
 
         this.player.x = gameOptions.playerStartPosition;
@@ -316,6 +319,26 @@ export default class GameScene extends Phaser.Scene {
             let maxPlatformHeight = game.config.height * gameOptions.platformVerticalLimit[1];
             let nextPlatformHeight = Phaser.Math.Clamp(nextPlatformGap, minPlatformHeight, maxPlatformHeight);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2, nextPlatformHeight);
+        }
+    }
+
+    insertScore = async () => {
+        console.log(this.score);
+        console.log(gameOptions.playerName);
+        if (this.score > gameOptions.thirdPlace.score) {
+            try {
+                const settings = {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'content-type': 'application/json', },
+                    body: JSON.stringify({ 'user': gameOptions.playerName, 'score': this.score })
+                };
+                const response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/rwBZGLRfKWrVM5dKf5QZ/scores', settings);
+                const r = await response.json();
+                console.log(r);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 };

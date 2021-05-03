@@ -40,6 +40,30 @@ export default class TitleScene extends Phaser.Scene {
     try {
       const response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/rwBZGLRfKWrVM5dKf5QZ/scores');
       gameOptions.scoreList = await response.json();
+
+      const arr = gameOptions.scoreList.result;
+      for (let i = 50; i <= 150; i += 50) {
+        let max = { "user": "none", "score": 0 }
+        let id = '';
+        arr.forEach((element, index) => {
+          if (element.score > max.score) {
+            max = element;
+            id = index;
+          }
+        });
+        switch (i) {
+          case 50:
+            gameOptions.firstPlace = max;
+            break;
+          case 100:
+            gameOptions.secondPlace = max;
+            break;
+          case 150:
+            gameOptions.thirdPlace = max;
+            break;
+        }
+        arr.splice(id, 1);
+      }
     } catch (error) {
       gameOptions.scoreList = 'Error!';
     }
