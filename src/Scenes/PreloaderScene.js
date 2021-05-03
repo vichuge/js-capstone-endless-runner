@@ -98,8 +98,8 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.audio('bgMusic', ['assets/audio/music_loop.mp3']);
     this.load.audio('click', ['assets/audio/click1.mp3']);
     this.load.audio('switch', ['assets/audio/switch2.mp3']);
-
-    //this.load.html('nameForm', 'assets/web/nameForm.html');
+    this.load.audio('coin', ['assets/audio/coin01.mp3']);
+    this.load.audio('jump', ['assets/audio/jump01.mp3']);
   }
 
   init() {

@@ -103,6 +103,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
             coin.disableBody(true, false);
             score += 10;
+            this.bgMusic = this.sound.add('coin', { volume: 0.5, loop: false }).play();
             this.scoreText.setText(`${gameOptions.playerName}'s Score: ${score}`);
 
             this.tweens.add({
@@ -249,8 +250,7 @@ export default class GameScene extends Phaser.Scene {
 
             // stops animation
             this.player.anims.stop();
-            this.bgMusic = this.sound.add('click', { volume: 1, loop: false });
-            this.bgMusic.play();
+            this.bgMusic = this.sound.add('jump', { volume: 0.5, loop: false }).play();
         }
     }
 
