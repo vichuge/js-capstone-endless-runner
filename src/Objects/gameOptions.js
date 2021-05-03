@@ -40,7 +40,10 @@ let gameOptions = {
     firePercent: 15,
 
     // Name of player
-    playerName: ''
+    playerName: '',
+
+    // Score list
+    scoreList: ''
 }
 
 export default gameOptions;

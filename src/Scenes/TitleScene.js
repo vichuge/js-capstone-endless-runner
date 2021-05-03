@@ -33,6 +33,16 @@ export default class TitleScene extends Phaser.Scene {
       this.model.bgMusicPlaying = true;
       this.sys.game.globals.bgMusic = this.bgMusic;
     }
+    this.getScores();
+  }
+
+  getScores = async () => {
+    try {
+      const response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/rwBZGLRfKWrVM5dKf5QZ/scores');
+      gameOptions.scoreList = await response.json();
+    } catch (error) {
+      gameOptions.scoreList = 'Error!';
+    }
   }
 
 };
