@@ -10,6 +10,7 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         this.add.image(400, 300, 'bgPreloader');
         this.score = 0;
+        this.model = this.sys.game.globals.model;
     }
 
     create() {
@@ -105,7 +106,10 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
             coin.disableBody(true, false);
             this.score += 10;
-            this.bgMusic = this.sound.add('coin', { volume: 0.5, loop: false }).play();
+            if (this.model.soundOn === true) {
+                this.bgMusic = this.sound.add('coin', { volume: 0.5, loop: false }).play();
+            }
+
             this.scoreText.setText(`${gameOptions.playerName}'s Score: ${this.score}`);
 
             this.tweens.add({
@@ -252,7 +256,10 @@ export default class GameScene extends Phaser.Scene {
 
             // stops animation
             this.player.anims.stop();
-            this.bgMusic = this.sound.add('jump', { volume: 0.5, loop: false }).play();
+            if (this.model.soundOn === true) {
+                this.bgMusic = this.sound.add('jump', { volume: 0.5, loop: false }).play();
+            }
+
         }
     }
 
@@ -323,8 +330,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     insertScore = async () => {
-        console.log(this.score);
-        console.log(gameOptions.playerName);
         if (this.score > gameOptions.thirdPlace.score) {
             try {
                 const settings = {
