@@ -1,5 +1,6 @@
 import 'phaser';
 import Button from '../Objects/Button';
+import Button2 from '../Objects/Button2';
 
 export default class OptionsScene extends Phaser.Scene {
   constructor() {
@@ -39,6 +40,10 @@ export default class OptionsScene extends Phaser.Scene {
     }.bind(this));
 
     this.updateAudio();
+
+    this.changeButton = new Button2(this, 400, 300, 'redButton1', 'redButton2', 'Edit Name');
+      //.setInteractive()
+      //.on('pointerDown', () => { console.log('hey!'); });
 
     this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'Title');
   }

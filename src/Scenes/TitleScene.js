@@ -1,6 +1,7 @@
 import 'phaser';
 import config from '../Config/config.js';
 import Button from '../Objects/Button';
+import gameOptions from '../Objects/gameOptions';
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
@@ -21,6 +22,9 @@ export default class TitleScene extends Phaser.Scene {
 
     // Credits
     this.creditsButton = new Button(this, config.width / 2, config.height / 2 + 150, 'yellowButton1', 'yellowButton2', 'Credits', 'Credits');
+
+    // Hall of fame
+    this.creditsButton = new Button(this, config.width / 2, config.height / 2 + 250, 'blueButton1', 'blueButton2', 'Records', 'HallOfFame');
 
     this.model = this.sys.game.globals.model;
     if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {

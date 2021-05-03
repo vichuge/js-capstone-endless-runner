@@ -10,7 +10,7 @@ let gameOptions = {
     spawnRange: [80, 200],
 
     // platform width range, in pixels
-    platformSizeRange: [90, 300],
+    platformSizeRange: [120, 300],
 
     // a height range between rightmost platform and next platform to be spawned
     platformHeightRange: [-5, 5],
@@ -34,10 +34,13 @@ let gameOptions = {
     jumps: 2,
 
     // % of probability a coin appears on the platform
-    coinPercent: 50,
+    coinPercent: 75,
 
     // % of probability a fire appears on the platform
-    firePercent: 15
+    firePercent: 15,
+
+    // Name of player
+    playerName: ''
 }
 
 export default gameOptions;

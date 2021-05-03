@@ -1,4 +1,5 @@
 import 'phaser';
+import gameOptions from '../Objects/gameOptions';
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -92,10 +93,13 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('bgOptions', 'assets/bg/bgOptions.png');
     this.load.image('bgCredits', 'assets/bg/bgCredits.png');
     this.load.image('bgEmpty', 'assets/bg/empty2.png');
+    this.load.image('bgHallOfFame', 'assets/bg/bg2.png');
 
     this.load.audio('bgMusic', ['assets/audio/music_loop.mp3']);
     this.load.audio('click', ['assets/audio/click1.mp3']);
     this.load.audio('switch', ['assets/audio/switch2.mp3']);
+
+    //this.load.html('nameForm', 'assets/web/nameForm.html');
   }
 
   init() {
@@ -103,7 +107,13 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   ready() {
-    this.scene.start('Title');
+    let txt = prompt ("Please enter your name", '');
+    if (txt === '') {
+      this.ready();
+    } else {
+      gameOptions.playerName = txt;
+      this.scene.start('Title');
+    }
   }
 
   create() {

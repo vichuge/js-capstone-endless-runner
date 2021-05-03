@@ -103,7 +103,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.coinGroup, function (player, coin) {
             coin.disableBody(true, false);
             score += 10;
-            this.scoreText.setText(`Score: ${score}`);
+            this.scoreText.setText(`${gameOptions.playerName}'s Score: ${score}`);
 
             this.tweens.add({
                 targets: coin,
@@ -135,7 +135,8 @@ export default class GameScene extends Phaser.Scene {
         this.input.on("pointerdown", this.jump, this);
 
         // score
-        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+        const t = `${gameOptions.playerName}'s Score: 0`;
+        this.scoreText = this.add.text(16, 16, t, { fontSize: '32px', fill: '#000' });
     }
 
     // adding mountains
@@ -248,7 +249,8 @@ export default class GameScene extends Phaser.Scene {
 
             // stops animation
             this.player.anims.stop();
-            //this.player.anims.play("jump");
+            this.bgMusic = this.sound.add('click', { volume: 1, loop: false });
+            this.bgMusic.play();
         }
     }
 

@@ -1,4 +1,7 @@
 import 'phaser';
+//import Button from '../Objects/Button';
+//import config from '../Config/config.js';
+//import gameOptions from '../Objects/gameOptions';
 
 export default class PreGameScene extends Phaser.Scene {
     constructor() {
@@ -6,6 +9,11 @@ export default class PreGameScene extends Phaser.Scene {
     }
 
     preload() {
+        //this.add.image(400, 300, 'bgPreGame');
+        
+        //this.add.text(config.width / 2 -150, config.height / 2 - 100, 'Please add your name', { color: 'black', fontFamily: 'Arial', fontSize: '32px '});
+        //this.gameButton = new Button(this, config.width / 2, config.height / 2 + 100, 'greenButton1', 'greenButton2', 'Play', 'Game');
+
         this.load.image("platform", "assets/objects/platform2.png");
 
         // player is a sprite sheet made by 24x48 pixels
@@ -34,7 +42,6 @@ export default class PreGameScene extends Phaser.Scene {
     }
 
     create() {
-
         // setting player animation
         this.anims.create({
             key: "run",
