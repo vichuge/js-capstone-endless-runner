@@ -15,7 +15,7 @@ export default class PreGameScene extends Phaser.Scene {
     });
 
     // the coin is a sprite sheet made by 20x20 pixels
-    this.load.spritesheet('coin', 'assets/objects/cherry20.png', {
+    this.load.spritesheet('coin', 'assets/objects/gem20.png', {
       frameWidth: 20,
       frameHeight: 20,
     });
