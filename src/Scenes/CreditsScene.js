@@ -1,6 +1,6 @@
 import 'phaser';
-import config from '../Config/config.js'
-//import Button from '../Objects/Button';
+import config from '../Config/config';
+// import Button from '../Objects/Button';
 
 export default class CreditsScene extends Phaser.Scene {
   constructor() {
@@ -19,12 +19,12 @@ export default class CreditsScene extends Phaser.Scene {
 
     Phaser.Display.Align.In.Center(
       this.creditsText,
-      this.zone
+      this.zone,
     );
 
     Phaser.Display.Align.In.Center(
       this.madeByText,
-      this.zone
+      this.zone,
     );
 
     this.madeByText.setY(1000);
@@ -37,7 +37,7 @@ export default class CreditsScene extends Phaser.Scene {
       delay: 1000,
       onComplete: () => {
         this.destroy;
-      }
+      },
     });
 
     this.madeByTween = this.tweens.add({
@@ -49,9 +49,9 @@ export default class CreditsScene extends Phaser.Scene {
       onComplete: () => {
         this.madeByTween.destroy;
         this.scene.start('Title');
-      }
+      },
     });
 
-    //this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'Title');
+    // this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'Title');
   }
-};
+}

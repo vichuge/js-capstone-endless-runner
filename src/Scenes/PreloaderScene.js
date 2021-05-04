@@ -16,44 +16,44 @@ export default class PreloaderScene extends Phaser.Scene {
     progressBox.fillStyle(0xffffff, 0.8);
     progressBox.fillRect(240, 270, 320, 50);
 
-    const width = this.cameras.main.width;
-    const height = this.cameras.main.height;
+    const { width } = this.cameras.main;
+    const { height } = this.cameras.main;
     const loadingText = this.make.text({
       x: width / 2,
       y: height / 2 - 50,
       text: 'Loading...',
       style: {
         font: '20px monospace',
-        fill: '#000000'
-      }
+        fill: '#000000',
+      },
     });
     loadingText.setOrigin(0.5, 0.5);
 
-    let percentText = this.make.text({
+    const percentText = this.make.text({
       x: width / 2,
       y: height / 2 - 5,
       text: '0%',
       style: {
         font: '18px monospace',
-        fill: '#000000'
-      }
+        fill: '#000000',
+      },
     });
     percentText.setOrigin(0.5, 0.5);
 
-    let assetText = this.make.text({
+    const assetText = this.make.text({
       x: width / 2,
       y: height / 2 + 50,
       text: '',
       style: {
         font: '18px monospace',
-        fill: '#000000'
-      }
+        fill: '#000000',
+      },
     });
     assetText.setOrigin(0.5, 0.5);
 
     // update progress bar
     this.load.on('progress', (value) => {
-      percentText.setText(parseInt(value * 100) + '%');
+      percentText.setText(`${parseInt(value * 100, 10)}%`);
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(250, 280, 300 * value, 30);
@@ -61,7 +61,7 @@ export default class PreloaderScene extends Phaser.Scene {
 
     // update file progress text
     this.load.on('fileprogress', (file) => {
-      assetText.setText('Loading asset: ' + file.key);
+      assetText.setText(`Loading asset: ${file.key}`);
     });
 
     // remove progress bar when complete
@@ -72,7 +72,6 @@ export default class PreloaderScene extends Phaser.Scene {
       percentText.destroy();
       assetText.destroy();
       this.ready();
-
     });
 
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
@@ -108,7 +107,7 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   ready() {
-    let txt = prompt ("Please enter your name", '');
+    const txt = prompt('Please enter your name', '');
     if (txt === '') {
       this.ready();
     } else {
@@ -116,7 +115,4 @@ export default class PreloaderScene extends Phaser.Scene {
       this.scene.start('Title');
     }
   }
-
-  create() {
-  }
-};
+}

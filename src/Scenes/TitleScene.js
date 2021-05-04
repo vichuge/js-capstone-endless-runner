@@ -1,5 +1,5 @@
 import 'phaser';
-import config from '../Config/config.js';
+import config from '../Config/config';
 import Button from '../Objects/Button';
 import gameOptions from '../Objects/gameOptions';
 
@@ -43,7 +43,7 @@ export default class TitleScene extends Phaser.Scene {
 
       const arr = gameOptions.scoreList.result;
       for (let i = 50; i <= 150; i += 50) {
-        let max = { "user": "none", "score": 0 }
+        let max = { user: 'none', score: 0 };
         let id = '';
         arr.forEach((element, index) => {
           if (element.score > max.score) {
@@ -61,6 +61,9 @@ export default class TitleScene extends Phaser.Scene {
           case 150:
             gameOptions.thirdPlace = max;
             break;
+          default:
+            gameOptions.firstPlace = 'Error!';
+            break;
         }
         arr.splice(id, 1);
       }
@@ -68,5 +71,4 @@ export default class TitleScene extends Phaser.Scene {
       gameOptions.scoreList = 'Error!';
     }
   }
-
-};
+}

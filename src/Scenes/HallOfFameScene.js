@@ -10,7 +10,7 @@ export default class HallOfFameScene extends Phaser.Scene {
   preload() {
     // add logo image
     this.add.image(400, 300, 'bgHallOfFame');
-    //this.add.image(400, 300, 'recordsTable');
+    // this.add.image(400, 300, 'recordsTable');
   }
 
   create() {
@@ -19,4 +19,4 @@ export default class HallOfFameScene extends Phaser.Scene {
     this.add.text(300, 150, `${gameOptions.thirdPlace.user}: ${gameOptions.thirdPlace.score}`, { fontSize: 24, fill: '#000' });
     this.menuButton = new Button(this, 400, 500, 'blueButton1', 'blueButton2', 'Menu', 'Title');
   }
-};
+}

@@ -14,7 +14,11 @@
       "no-shadow": "off",
       "no-param-reassign": "off",
       "eol-last": "off",
-      "no-use-before-define": "off"
+      "no-use-before-define": "off",
+      "no-undef": "off",
+      "no-underscore-dangle": "off",
+      "no-alert": "off",
+      "no-unused-expressions": "off"
     },
     "ignorePatterns": [
       "dist/",
