@@ -16,7 +16,7 @@
 ## Live Demo
 
 **If the game take too long to load OR stuck at 91% just press f5** <br>
-[Live Demo Link]()
+[Live Demo Link](https://vichuge.github.io/js-capstone-endless-runner/)
 
 ## Game Design Documment
 
