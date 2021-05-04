@@ -108,7 +108,7 @@ export default class PreloaderScene extends Phaser.Scene {
 
   ready() {
     const txt = prompt('Please enter your name', '');
-    if (txt === '') {
+    if (txt === '' || txt === null) {
       this.ready();
     } else {
       gameOptions.playerName = txt;

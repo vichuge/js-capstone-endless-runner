@@ -1,7 +1,4 @@
 import 'phaser';
-// import Button from '../Objects/Button';
-// import config from '../Config/config.js';
-// import gameOptions from '../Objects/gameOptions';
 
 export default class PreGameScene extends Phaser.Scene {
   constructor() {
