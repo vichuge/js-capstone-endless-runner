@@ -48,7 +48,6 @@ The cute fox can jump once, and twice in midst of air defying rules of physics a
 
 ```
     npm install
-
 ```
 
 3- Run live server
@@ -84,3 +83,4 @@ Give a ⭐️ if you like this project!
 - Artwork created by Luis Zuno [@ansimuz](https://www.patreon.com/ansimuz)
 - Music by Pascal Belisle
 - UI pack by [Kenney Vleugels](https://www.kenney.nl/)
+- sound effects by [opengameart.org](https://opengameart.org/)
