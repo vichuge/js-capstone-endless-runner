@@ -100,7 +100,6 @@ export default class GameScene extends Phaser.Scene {
     }, null, this);
 
     // setting collisions between the player and the coin group
-    // let score = 0;
     this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
       coin.disableBody(true, false);
       this.score += 10;

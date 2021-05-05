@@ -8,9 +8,7 @@ export default class HallOfFameScene extends Phaser.Scene {
   }
 
   preload() {
-    // add logo image
     this.add.image(400, 300, 'bgHallOfFame');
-    // this.add.image(400, 300, 'recordsTable');
   }
 
   create() {
