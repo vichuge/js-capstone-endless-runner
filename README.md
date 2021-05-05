@@ -1,4 +1,4 @@
-# Sunny Land
+# Sunny Land (Platform game capstone project)
 
 > It's a 2d game with a cute fox who set himself out for an endless adventure to jump collect gems and avoid frogs on speeding various platforms
 
