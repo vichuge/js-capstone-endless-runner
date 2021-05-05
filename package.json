@@ -34,6 +34,10 @@
     "phaser": "^3.54.0",
     "regenerator-runtime": "^0.13.7",
     "style-loader": "^2.0.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-csstree-validator": "^1.9.0",
+    "stylelint-scss": "^3.19.0",
     "webpack": "^5.36.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"

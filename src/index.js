@@ -9,6 +9,7 @@ import CreditsScene from './Scenes/CreditsScene';
 import PreGameScene from './Scenes/PreGameScene';
 import HallOfFameScene from './Scenes/HallOfFameScene';
 import Model from './Model';
+import './style.css';
 
 class Game extends Phaser.Game {
   constructor() {
