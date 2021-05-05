@@ -95,6 +95,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('bgCredits', 'assets/bg/bgCredits.png');
     this.load.image('bgEmpty', 'assets/bg/empty2.png');
     this.load.image('bgHallOfFame', 'assets/bg/bg2.png');
+    this.load.image('bgPregame', 'assets/bg/bg4.png');
 
     this.load.audio('bgMusic', ['assets/audio/music_loop.mp3']);
     this.load.audio('click', ['assets/audio/click1.mp3']);
@@ -108,12 +109,22 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   ready() {
-    const txt = prompt('Please enter your name', '');
-    if (txt === '' || txt === null) {
-      this.ready();
-    } else {
-      gameOptions.playerName = txt;
-      this.scene.start('Title');
-    }
+    console.log('ready');
+    document.getElementById('modalButton').click();
+    const contModal = document.getElementById('modalContinue');
+    contModal.addEventListener('click', () => {
+      const name = document.getElementById('name').value;
+
+      const errors = document.getElementById('error');
+      errors.innerHTML = '';
+      if (name === '' || name === null) {
+        errors.innerHTML += 'Name can\'t be blank';
+        return;
+      } else {
+        gameOptions.playerName = name;
+        document.getElementById('modalButton').click();
+      }
+    });
+    this.scene.start('Title');
   }
 }

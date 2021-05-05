@@ -1,5 +1,4 @@
 import 'phaser';
-import gameOptions from './gameOptions';
 
 export default class Button2 extends Phaser.GameObjects.Container {
   constructor(scene, x, y, key1, key2, text) {
@@ -16,13 +15,7 @@ export default class Button2 extends Phaser.GameObjects.Container {
     this.add(this.text);
 
     this.button.on('pointerdown', () => {
-      const txt = prompt('Please enter your name', gameOptions.playerName);
-      if (txt === '' || txt === null) {
-        this.scene.scene.start('Options');
-      } else {
-        gameOptions.playerName = txt;
-        this.scene.scene.start('Title');
-      }
+      document.getElementById('modalButton').click();
     });
 
     this.button.on('pointerover', () => {
