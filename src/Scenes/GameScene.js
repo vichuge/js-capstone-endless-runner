@@ -337,7 +337,7 @@ export default class GameScene extends Phaser.Scene {
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ user: gameOptions.playerName, score: this.score }),
         };
-        this.response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/rwBZGLRfKWrVM5dKf5QZ/scores', settings);
+        this.response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/FCThSszjJRKvlp5DfYXN/scores', settings);
       } catch (error) {
         this.response = 'Error!';
       }
