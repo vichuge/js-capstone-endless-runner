@@ -109,7 +109,6 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   ready() {
-    console.log('ready');
     document.getElementById('modalButton').click();
     const contModal = document.getElementById('modalContinue');
     contModal.addEventListener('click', () => {
@@ -119,7 +118,6 @@ export default class PreloaderScene extends Phaser.Scene {
       errors.innerHTML = '';
       if (name === '' || name === null) {
         errors.innerHTML += 'Name can\'t be blank';
-        return;
       } else {
         gameOptions.playerName = name;
         document.getElementById('modalButton').click();
