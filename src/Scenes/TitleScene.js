@@ -9,20 +9,15 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   preload() {
-
     this.add.image(400, 300, 'bgTitle');
   }
 
   create() {
-
     this.gameButton = new Button(this, config.width / 2, config.height / 2 - 50, 'greenButton1', 'greenButton2', 'Play', 'PreGame');
-
 
     this.optionsButton = new Button(this, config.width / 2, config.height / 2 + 50, 'redButton1', 'redButton2', 'Options', 'Options');
 
-
     this.creditsButton = new Button(this, config.width / 2, config.height / 2 + 150, 'yellowButton1', 'yellowButton2', 'Credits', 'Credits');
-
 
     this.creditsButton = new Button(this, config.width / 2, config.height / 2 + 250, 'blueButton1', 'blueButton2', 'Records', 'HallOfFame');
 

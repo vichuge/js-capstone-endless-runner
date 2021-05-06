@@ -8,6 +8,7 @@ import OptionsScene from './Scenes/OptionsScene';
 import CreditsScene from './Scenes/CreditsScene';
 import PreGameScene from './Scenes/PreGameScene';
 import HallOfFameScene from './Scenes/HallOfFameScene';
+import GameOverScene from './Scenes/GameOverScene';
 import Model from './Model';
 import './style.css';
 
@@ -24,6 +25,7 @@ class Game extends Phaser.Game {
     this.scene.add('Game', GameScene);
     this.scene.add('PreGame', PreGameScene);
     this.scene.add('HallOfFame', HallOfFameScene);
+    this.scene.add('GameOver', GameOverScene);
     this.scene.start('Boot');
   }
 }

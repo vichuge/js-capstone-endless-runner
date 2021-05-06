@@ -7,9 +7,7 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   preload() {
-
     this.add.image(400, 300, 'bgPreloader');
-
 
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
@@ -51,7 +49,6 @@ export default class PreloaderScene extends Phaser.Scene {
     });
     assetText.setOrigin(0.5, 0.5);
 
-
     this.load.on('progress', (value) => {
       percentText.setText(`${parseInt(value * 100, 10)}%`);
       progressBar.clear();
@@ -59,11 +56,9 @@ export default class PreloaderScene extends Phaser.Scene {
       progressBar.fillRect(250, 280, 300 * value, 30);
     });
 
-
     this.load.on('fileprogress', (file) => {
       assetText.setText(`Loading asset: ${file.key}`);
     });
-
 
     this.load.on('complete', () => {
       progressBar.destroy();
@@ -75,7 +70,6 @@ export default class PreloaderScene extends Phaser.Scene {
     });
 
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
-
 
     this.load.image('blueButton1', 'assets/ui/blue_button01.png');
     this.load.image('blueButton2', 'assets/ui/blue_button02.png');
@@ -96,6 +90,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('bgEmpty', 'assets/bg/empty2.png');
     this.load.image('bgHallOfFame', 'assets/bg/bg2.png');
     this.load.image('bgPregame', 'assets/bg/bg4.png');
+    this.load.image('bgGameOver', 'assets/bg/bg3.png');
 
     this.load.audio('bgMusic', ['assets/audio/music_loop.mp3']);
     this.load.audio('click', ['assets/audio/click1.mp3']);
