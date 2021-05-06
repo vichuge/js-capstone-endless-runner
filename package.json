@@ -1,0 +1,55 @@
+{
+  "name": "js-capstone-endless-runner",
+  "version": "1.0.0",
+  "description": "This project is a endless runner game made on js with phaser and webpack technologies.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack --mode development",
+    "watch": "webpack --watch --mode development",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vichuge/js-capstone-endless-runner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vichuge/js-capstone-endless-runner/issues"
+  },
+  "homepage": "https://github.com/vichuge/js-capstone-endless-runner#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.14.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "css-loader": "^5.2.4",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
+    "jest-fetch-mock": "^3.0.3",
+    "phaser": "^3.54.0",
+    "regenerator-runtime": "^0.13.7",
+    "style-loader": "^2.0.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-csstree-validator": "^1.9.0",
+    "stylelint-scss": "^3.19.0",
+    "webpack": "^5.36.1",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "jsdom": "^16.5.3",
+    "phaser": "^3.50.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "automock": false
+  }
+}
