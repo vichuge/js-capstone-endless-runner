@@ -8,7 +8,7 @@ export default class CreditsScene extends Phaser.Scene {
   }
 
   preload() {
-    // add logo image
+
     this.add.image(400, 300, 'bgCredits');
   }
 

@@ -56,6 +56,8 @@ The cute fox can jump once, and twice in midst of air defying rules of physics a
     npm run watch / npm run start
 ```
 
+3.2- If you don't user live server on vs code dist/index.html needs to be launched after ```npm start```.
+
 4- Everything should be running by now.
 
 ### Testing
