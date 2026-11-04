@@ -6,16 +6,14 @@
 
 ## Built With
 
-- HTML
-- Phaser
-- JavaScript
-- ES6
-- Webpack
-- Jest
+- [Phaser 4](https://phaser.io/) (arcade physics, WebGL with `smoothPixelArt`)
+- JavaScript (ES2022 modules)
+- webpack 5 + webpack-dev-server
+- Bootstrap 5 (name modal)
+- Jest 30, ESLint 10, Stylelint 17
 
 ## Live Demo
 
-**If the game take too long to load OR stuck at 91% just press f5** <br>
 [Live Demo Link](https://vichuge.github.io/js-capstone-endless-runner/)
 
 ## Game Design Documment
@@ -27,45 +25,49 @@ The cute fox can jump once, and twice in midst of air defying rules of physics a
 
 ### How to play
 
-- JUMP:
-  [ Left click ]
+- **Start a run:** click *Play* or press `Space` on the title screen
+- **Jump / double jump:** left click, tap, `Space` or `↑` (press again in the air to double jump)
+- **Play again:** click *Play again* or press `Space` on the Game Over screen
+- Short control hints appear on the title, in game and on Game Over (touch devices see "Tap" hints).
+- Collect gems (+10), avoid frogs, don't fall.
+- Scores are saved in your browser (see *Leaderboard* below).
 
 ### Prerequisites
 
-- Live Server plugin for Visual Studio Code
+- Node.js 20.19+ (22 recommended, see `.nvmrc`)
 
 ### Setup
 
-1- Clone the repository
-
-```
-    git clone https://github.com/vichuge/js-capstone-endless-runner.git
-```
-
-2- Open the folder on VS Code.
-
-3- install Packages
-
-```
-    npm install
+```bash
+git clone https://github.com/vichuge/js-capstone-endless-runner.git
+cd js-capstone-endless-runner
+npm install
+npm start
 ```
 
-3- Run live server
+Then open <http://localhost:8080>. The dev server rebuilds and reloads on every change.
 
-```
-    npm run watch / npm run start
-```
+### Scripts
 
-3.2- If you don't user live server on vs code dist/index.html needs to be launched after ```npm start```.
+| Command | What it does |
+| --- | --- |
+| `npm start` | Dev server at <http://localhost:8080> (in-memory bundle, live reload) |
+| `npm run build` | Production bundle into `dist/main.js` (what GitHub Pages serves) |
+| `npm run dev` / `npm run watch` | Development bundle written to `dist/` (once / on every change) |
+| `npm test` | Jest unit tests |
+| `npm run lint` / `npm run lint:fix` | ESLint + Stylelint (and autofix) |
 
-4- Everything should be running by now.
+### Leaderboard
+
+The original Microverse leaderboard API this project used has been shut down, so
+scores are now stored in the browser's `localStorage` (top scores per browser).
+To use a remote leaderboard again, set `SCORES_API_URL` in `src/scores.js` to an
+API that answers `GET → { result: [{ user, score }] }` and accepts `POST { user, score }`.
 
 ### Testing
 
-Run the next on your terminal in the repository folder:
-
-```
-    npm run test
+```bash
+npm test
 ```
 
 ## Author

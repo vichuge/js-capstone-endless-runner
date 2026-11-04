@@ -1,18 +1,20 @@
-import 'phaser';
+import Phaser from 'phaser';
 import gameOptions from '../Objects/gameOptions';
+import { isHighScore, saveScore } from '../scores';
+import {
+  addHint, fadeIn, hasKeyboard, playSound, textStyle,
+} from '../Objects/ui';
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('Game');
   }
 
-  preload() {
-    this.add.image(400, 300, 'bgPreloader');
-    this.score = 0;
-    this.model = this.sys.game.globals.model;
-  }
-
   create() {
+    this.add.image(this.scale.width / 2, this.scale.height / 2, 'bgPreloader');
+    this.score = 0;
+    this.isGameOver = false;
+
     this.mountainGroup = this.add.group();
 
     this.platformGroup = this.add.group({
@@ -63,10 +65,10 @@ export default class GameScene extends Phaser.Scene {
 
     this.playerJumps = 0;
 
-    this.addPlatform(game.config.width, game.config.width / 2,
-      game.config.height * gameOptions.platformVerticalLimit[1]);
+    this.addPlatform(this.scale.width, this.scale.width / 2,
+      this.scale.height * gameOptions.platformVerticalLimit[1]);
 
-    this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.7, 'player');
+    this.player = this.physics.add.sprite(gameOptions.playerStartPosition, this.scale.height * 0.7, 'player');
     this.player.setGravityY(gameOptions.playerGravity);
     this.player.setDepth(2);
 
@@ -81,9 +83,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
       coin.disableBody(true, false);
       this.score += 10;
-      if (this.model.soundOn === true) {
-        this.bgMusic = this.sound.add('coin', { volume: 0.5, loop: false }).play();
-      }
+      playSound(this, 'coin');
 
       this.scoreText.setText(`${gameOptions.playerName}'s Score: ${this.score}`);
 
@@ -110,15 +110,30 @@ export default class GameScene extends Phaser.Scene {
     }, null, this);
 
     this.input.on('pointerdown', this.jump, this);
+    // Ignore key repeat, so holding SPACE doesn't fire both jumps at once.
+    const keyJump = (event) => {
+      if (!event.repeat) this.jump();
+    };
+    this.input.keyboard.on('keydown-SPACE', keyJump);
+    this.input.keyboard.on('keydown-UP', keyJump);
 
     const t = `${gameOptions.playerName}'s Score: 0`;
-    this.scoreText = this.add.text(16, 16, t, { fontSize: '32px', fill: '#000' });
+    this.scoreText = this.add.text(16, 16, t, textStyle(22)).setDepth(3);
+
+    // In-game "how to play": fades out after the first double jump or a few seconds.
+    const hint = hasKeyboard(this)
+      ? 'SPACE or click to jump\nPress again in the air to double jump'
+      : 'Tap to jump\nTap again in the air to double jump';
+    this.controlsHint = addHint(this, 150, hint, { size: 16, pulse: false }).setDepth(3);
+    this.time.delayedCall(5000, () => this.hideControlsHint());
+
+    fadeIn(this);
   }
 
   addMountains() {
     const rightmostMountain = this.getRightmostMountain();
-    if (rightmostMountain < game.config.width * 2) {
-      const mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), game.config.height + Phaser.Math.Between(0, 100), 'mountain');
+    if (rightmostMountain < this.scale.width * 2) {
+      const mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), this.scale.height + Phaser.Math.Between(0, 100), 'mountain');
       mountain.setOrigin(0.5, 1);
       mountain.body.setVelocityX(gameOptions.mountainSpeed * -1);
       this.mountainGroup.add(mountain);
@@ -142,14 +157,17 @@ export default class GameScene extends Phaser.Scene {
     this.addedPlatforms += 1;
     let platform;
     if (this.platformPool.getLength()) {
+      // Resize the TileSprite and its body directly instead of scaling it:
+      // scaling a recycled platform left its arcade body only a few px wide,
+      // so the fox fell through it.
       platform = this.platformPool.getFirst();
-      platform.x = posX;
-      platform.y = posY;
-      platform.active = true;
-      platform.visible = true;
       this.platformPool.remove(platform);
-      platform.displayWidth = platformWidth;
-      platform.tileScaleX = 1 / platform.scaleX;
+      platform.setActive(true).setVisible(true);
+      platform.setSize(platformWidth, 32);
+      platform.body.setSize(platformWidth, 32);
+      platform.body.reset(posX, posY);
+      platform.body.setVelocityX(Phaser.Math.Between(gameOptions.platformSpeedRange[0],
+        gameOptions.platformSpeedRange[1]) * -1);
     } else {
       platform = this.add.tileSprite(posX, posY, platformWidth, 32, 'platform');
       this.physics.add.existing(platform);
@@ -166,11 +184,9 @@ export default class GameScene extends Phaser.Scene {
       if (Phaser.Math.Between(1, 100) <= gameOptions.coinPercent) {
         if (this.coinPool.getLength()) {
           const coin = this.coinPool.getFirst();
-          coin.x = posX;
-          coin.y = posY - 96;
+          coin.enableBody(true, posX, posY - 96, true, true);
           coin.alpha = 1;
-          coin.active = true;
-          coin.visible = true;
+          coin.setVelocityX(platform.body.velocity.x);
           this.coinPool.remove(coin);
         } else {
           const coin = this.physics.add.sprite(posX, posY - 96, 'coin');
@@ -204,6 +220,15 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+  hideControlsHint() {
+    if (!this.controlsHint) return;
+    const hint = this.controlsHint;
+    this.controlsHint = null;
+    this.tweens.add({
+      targets: hint, alpha: 0, y: hint.y - 20, duration: 500, onComplete: () => hint.destroy(),
+    });
+  }
+
   jump() {
     if ((!this.dying) && (this.player.body.touching.down
       || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) {
@@ -212,27 +237,27 @@ export default class GameScene extends Phaser.Scene {
       }
       this.player.setVelocityY(gameOptions.jumpForce * -1);
       this.playerJumps += 1;
+      if (this.playerJumps === gameOptions.jumps) this.hideControlsHint();
 
       this.player.anims.stop();
-      if (this.model.soundOn === true) {
-        this.bgMusic = this.sound.add('jump', { volume: 0.5, loop: false }).play();
-      }
+      playSound(this, 'jump');
     }
   }
 
   update() {
-    if (this.player.y > game.config.height) {
-      gameOptions.actualScore = this.score;
-      this.scene.start('GameOver');
-      this.insertScore();
+    if (this.isGameOver) return;
+
+    if (this.player.y > this.scale.height) {
+      this.endGame();
+      return;
     }
 
     this.player.x = gameOptions.playerStartPosition;
 
-    let minDistance = game.config.width;
+    let minDistance = this.scale.width;
     let rightmostPlatformHeight = 0;
     this.platformGroup.getChildren().forEach((platform) => {
-      const platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
+      const platformDistance = this.scale.width - platform.x - platform.displayWidth / 2;
       if (platformDistance < minDistance) {
         minDistance = platformDistance;
         rightmostPlatformHeight = platform.y;
@@ -261,7 +286,7 @@ export default class GameScene extends Phaser.Scene {
       if (mountain.x < -mountain.displayWidth) {
         const rightmostMountain = this.getRightmostMountain();
         mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);
-        mountain.y = game.config.height + Phaser.Math.Between(0, 100);
+        mountain.y = this.scale.height + Phaser.Math.Between(0, 100);
         mountain.setFrame(Phaser.Math.Between(0, 3));
         if (Phaser.Math.Between(0, 1)) {
           mountain.setDepth(1);
@@ -277,34 +302,24 @@ export default class GameScene extends Phaser.Scene {
         gameOptions.platformHeightRange[1],
       );
       const nextPlatformGap = rightmostPlatformHeight + platformRandomHeight;
-      const minPlatformHeight = game.config.height * gameOptions.platformVerticalLimit[0];
-      const maxPlatformHeight = game.config.height * gameOptions.platformVerticalLimit[1];
+      const minPlatformHeight = this.scale.height * gameOptions.platformVerticalLimit[0];
+      const maxPlatformHeight = this.scale.height * gameOptions.platformVerticalLimit[1];
       const nextPlatformHeight = Phaser.Math.Clamp(
         nextPlatformGap, minPlatformHeight, maxPlatformHeight,
       );
       this.addPlatform(
         nextPlatformWidth,
-        game.config.width + nextPlatformWidth / 2,
+        this.scale.width + nextPlatformWidth / 2,
         nextPlatformHeight,
       );
     }
   }
 
-  insertScore = async () => {
-    const response = '';
-    if (this.score > gameOptions.thirdPlace.score) {
-      try {
-        const settings = {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ user: gameOptions.playerName, score: this.score }),
-        };
-        this.response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/FCThSszjJRKvlp5DfYXN/scores', settings);
-      } catch (error) {
-        this.response = 'Error!';
-      }
-    }
-    return response;
+  endGame() {
+    this.isGameOver = true;
+    gameOptions.actualScore = this.score;
+    gameOptions.isNewRecord = isHighScore(this.score);
+    if (this.score > 0) saveScore(gameOptions.playerName, this.score);
+    this.scene.start('GameOver');
   }
 }
