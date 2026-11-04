@@ -1,56 +1,39 @@
-import 'phaser';
-import config from '../Config/config';
+import Phaser from 'phaser';
 import Button from '../Objects/Button';
+import { fadeIn, textStyle } from '../Objects/ui';
 
 export default class CreditsScene extends Phaser.Scene {
   constructor() {
     super('Credits');
   }
 
-  preload() {
-    this.add.image(400, 300, 'bgCredits');
-  }
-
   create() {
-    this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '64px', fill: '#fff' });
-    this.madeByText = this.add.text(0, 0, 'Created By: \n Victor Pacheco', { fontSize: '52px', fill: '#fff' });
-    this.zone = this.add.zone(config.width / 2, config.height / 2, config.width, config.height);
+    const { width, height } = this.scale;
+    this.add.image(width / 2, height / 2, 'bgCredits');
 
-    Phaser.Display.Align.In.Center(
-      this.creditsText,
-      this.zone,
-    );
+    const creditsText = this.add.text(width / 2, height / 2, 'Credits', textStyle(56)).setOrigin(0.5);
+    const madeByText = this.add.text(width / 2, height + 100, 'Created By:\nVictor Pacheco', textStyle(40, '#ffffff', { lineSpacing: 12 }))
+      .setOrigin(0.5);
 
-    Phaser.Display.Align.In.Center(
-      this.madeByText,
-      this.zone,
-    );
-
-    this.madeByText.setY(1000);
-
-    this.creditsTween = this.tweens.add({
-      targets: this.creditsText,
+    this.tweens.add({
+      targets: creditsText,
       y: -100,
       ease: 'Power1',
       duration: 3000,
       delay: 1000,
-      onComplete: () => {
-        this.destroy;
-      },
     });
 
-    this.madeByTween = this.tweens.add({
-      targets: this.madeByText,
-      y: -300,
+    this.tweens.add({
+      targets: madeByText,
+      y: -150,
       ease: 'Power1',
       duration: 8000,
       delay: 700,
-      onComplete: () => {
-        this.madeByTween.destroy;
-        this.scene.start('Title');
-      },
+      onComplete: () => this.scene.start('Title'),
     });
 
-    this.menuButton = new Button(this, 100, 50, 'blueButton1', 'blueButton2', 'Menu', 'Title');
+    new Button(this, 110, 50, 'blueButton1', 'blueButton2', 'Menu', 'Title');
+
+    fadeIn(this);
   }
 }

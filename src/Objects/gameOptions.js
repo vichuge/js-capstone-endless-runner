@@ -27,13 +27,8 @@ const gameOptions = {
   firePercent: 15,
 
   playerName: '',
-  actualScore: '',
-
-  scoreList: '',
-
-  firstPlace: '',
-  secondPlace: '',
-  thirdPlace: '',
+  actualScore: 0,
+  isNewRecord: false,
 };
 
 export default gameOptions;

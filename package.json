@@ -1,55 +1,58 @@
 {
   "name": "js-capstone-endless-runner",
   "version": "1.0.0",
-  "description": "This project is a endless runner game made on js with phaser and webpack technologies.",
+  "description": "Sunny Land: an endless runner game made with Phaser and webpack.",
   "main": "index.js",
   "scripts": {
+    "start": "webpack serve --mode development",
     "dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "start": "webpack --mode development",
     "watch": "webpack --watch --mode development",
-    "test": "jest"
+    "build": "webpack --mode production",
+    "test": "jest",
+    "lint": "eslint . && stylelint \"src/**/*.css\"",
+    "lint:fix": "eslint . --fix && stylelint \"src/**/*.css\" --fix",
+    "smoke": "node tools/smoke-test.cjs"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vichuge/js-capstone-endless-runner.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Victor Pacheco",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/vichuge/js-capstone-endless-runner/issues"
   },
   "homepage": "https://github.com/vichuge/js-capstone-endless-runner#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.14.0",
-    "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.6.3",
-    "css-loader": "^5.2.4",
-    "eslint": "^7.25.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "jest": "^26.6.3",
-    "jest-fetch-mock": "^3.0.3",
-    "phaser": "^3.54.0",
-    "regenerator-runtime": "^0.13.7",
-    "style-loader": "^2.0.0",
-    "stylelint": "^13.13.1",
-    "stylelint-config-standard": "^22.0.0",
-    "stylelint-csstree-validator": "^1.9.0",
-    "stylelint-scss": "^3.19.0",
-    "webpack": "^5.36.1",
-    "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^3.11.2"
-  },
-  "dependencies": {
-    "jsdom": "^16.5.3",
-    "phaser": "^3.50.0"
+    "@babel/core": "^7.29.13",
+    "@babel/preset-env": "^7.29.7",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "babel-jest": "^30.5.2",
+    "css-loader": "^7.1.5",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "jest": "^30.5.2",
+    "jest-fetch-mock": "^4.2.0",
+    "playwright": "^1.64.1",
+    "style-loader": "^4.0.0",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard": "^40.0.0",
+    "webpack": "^5.112.2",
+    "webpack-cli": "^7.3.1",
+    "webpack-dev-server": "^5.2.7"
   },
   "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    },
-    "automock": false
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src"
+    ]
+  },
+  "dependencies": {
+    "phaser": "^4.2.1"
+  },
+  "engines": {
+    "node": ">=20.19"
   }
 }

@@ -1,69 +1,46 @@
-import 'phaser';
-import config from '../Config/config';
+import Phaser from 'phaser';
 import Button from '../Objects/Button';
-import gameOptions from '../Objects/gameOptions';
+import {
+  addHint, centerX, fadeIn, hasKeyboard, onSpace, playSound,
+} from '../Objects/ui';
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
     super('Title');
   }
 
-  preload() {
-    this.add.image(400, 300, 'bgTitle');
-  }
-
   create() {
-    this.gameButton = new Button(this, config.width / 2, config.height / 2 - 50, 'greenButton1', 'greenButton2', 'Play', 'PreGame');
+    const { width, height } = this.scale;
+    this.add.image(width / 2, height / 2, 'bgTitle');
 
-    this.optionsButton = new Button(this, config.width / 2, config.height / 2 + 50, 'redButton1', 'redButton2', 'Options', 'Options');
+    const x = centerX(this);
+    const y = height / 2;
+    new Button(this, x, y - 50, 'greenButton1', 'greenButton2', 'Play', 'PreGame');
+    new Button(this, x, y + 30, 'redButton1', 'redButton2', 'Options', 'Options');
+    new Button(this, x, y + 110, 'yellowButton1', 'yellowButton2', 'Credits', 'Credits');
+    new Button(this, x, y + 190, 'blueButton1', 'blueButton2', 'Records', 'HallOfFame');
 
-    this.creditsButton = new Button(this, config.width / 2, config.height / 2 + 150, 'yellowButton1', 'yellowButton2', 'Credits', 'Credits');
-
-    this.creditsButton = new Button(this, config.width / 2, config.height / 2 + 250, 'blueButton1', 'blueButton2', 'Records', 'HallOfFame');
+    // SPACE = Play, plus a short "how to play" under the buttons.
+    onSpace(this, () => {
+      playSound(this, 'click');
+      this.scene.start('PreGame');
+    });
+    if (hasKeyboard(this)) {
+      addHint(this, 548, 'Press SPACE to play', { size: 18, color: '#ffd34e' });
+      addHint(this, 578, 'Jump: SPACE or click  -  press again in the air to double jump', { size: 12, pulse: false });
+    } else {
+      addHint(this, 548, 'Tap Play to start', { size: 18, color: '#ffd34e' });
+      addHint(this, 578, 'Tap to jump  -  tap again in the air to double jump', { size: 12, pulse: false });
+    }
 
     this.model = this.sys.game.globals.model;
-    if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+    if (this.model.musicOn && !this.model.bgMusicPlaying) {
       this.bgMusic = this.sound.add('bgMusic', { volume: 0.5, loop: true });
       this.bgMusic.play();
       this.model.bgMusicPlaying = true;
       this.sys.game.globals.bgMusic = this.bgMusic;
     }
-    this.getScores();
-  }
 
-  getScores = async () => {
-    try {
-      const response = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/FCThSszjJRKvlp5DfYXN/scores');
-      gameOptions.scoreList = await response.json();
-
-      const arr = gameOptions.scoreList.result;
-      for (let i = 50; i <= 150; i += 50) {
-        let max = { user: 'none', score: 0 };
-        let id = '';
-        arr.forEach((element, index) => {
-          if (element.score > max.score) {
-            max = element;
-            id = index;
-          }
-        });
-        switch (i) {
-          case 50:
-            gameOptions.firstPlace = max;
-            break;
-          case 100:
-            gameOptions.secondPlace = max;
-            break;
-          case 150:
-            gameOptions.thirdPlace = max;
-            break;
-          default:
-            gameOptions.firstPlace = 'Error!';
-            break;
-        }
-        arr.splice(id, 1);
-      }
-    } catch (error) {
-      gameOptions.scoreList = 'Error!';
-    }
+    fadeIn(this);
   }
 }

@@ -1,3 +1,36 @@
+@font-face {
+  font-family: kenvector;
+
+  /* Resolved relative to dist/index.html (css-loader has `url: false`). */
+  src: url("assets/fonts/kenvector_future.ttf") format("truetype");
+  font-display: swap;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #2e2a4a 0%, #14121f 100%);
+}
+
+#game {
+  width: 100%;
+  height: 100%;
+}
+
+#game canvas {
+  box-shadow: 0 0 40px rgb(0 0 0 / 50%);
+}
+
+.modal-content {
+  font-family: kenvector, sans-serif;
+  border: 4px solid #2b1d3a;
+  border-radius: 12px;
+}
+
 .error {
-  color: red;
+  min-height: 1.5rem;
+  margin: 0.5rem 0 0;
+  color: #d63031;
 }

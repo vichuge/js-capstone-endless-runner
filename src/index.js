@@ -1,4 +1,4 @@
-import 'phaser';
+import Phaser from 'phaser';
 import config from './Config/config';
 import GameScene from './Scenes/GameScene';
 import BootScene from './Scenes/BootScene';
@@ -10,6 +10,7 @@ import PreGameScene from './Scenes/PreGameScene';
 import HallOfFameScene from './Scenes/HallOfFameScene';
 import GameOverScene from './Scenes/GameOverScene';
 import Model from './Model';
+import { setupNameModal } from './nameModal';
 import './style.css';
 
 class Game extends Phaser.Game {
@@ -30,4 +31,5 @@ class Game extends Phaser.Game {
   }
 }
 
+setupNameModal();
 window.game = new Game();
